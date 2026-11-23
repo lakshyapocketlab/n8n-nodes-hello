@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 (2026-11-23)
+
+- Node and credential icons now use the Hello logo (replaces the placeholder icon).
+
 ## 1.0.2 (2026-11-23)
 
 - Author contact email is now support@lakshyapocketlab.com.
