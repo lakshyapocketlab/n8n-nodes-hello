@@ -1,4 +1,4 @@
-# n8n-nodes-hello
+# @lakshyapocketlab/n8n-nodes-hello
 
 n8n community nodes for [Hello](https://lakshyapocketlab.com), a WhatsApp Business API provider. Send messages and templates, upload media, list numbers and templates, and start workflows when a WhatsApp number receives a message.
 
@@ -6,7 +6,7 @@ Nodes: **Hello** (actions) and **Hello Trigger**. Zero runtime dependencies.
 
 ## Install
 
-Self-hosted n8n: **Settings, Community Nodes, Install**, enter `n8n-nodes-hello`. (n8n Cloud once the package is verified.)
+Self-hosted n8n: **Settings, Community Nodes, Install**, enter `@lakshyapocketlab/n8n-nodes-hello`. (n8n Cloud once the package is verified.)
 
 ## Credentials
 

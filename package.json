@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-hello",
+  "name": "@lakshyapocketlab/n8n-nodes-hello",
   "version": "0.1.0",
   "description": "n8n community node for Hello, the WhatsApp Business API provider: send messages and templates, and trigger workflows on incoming WhatsApp messages.",
   "license": "MIT",
@@ -56,5 +56,8 @@
   },
   "bugs": {
     "url": "https://github.com/lakshyapocketlab/n8n-nodes-hello/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

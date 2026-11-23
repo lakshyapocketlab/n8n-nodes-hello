@@ -9,7 +9,7 @@
         ]
       },
       "name": "Hello Trigger",
-      "type": "n8n-nodes-hello.helloTrigger",
+      "type": "@lakshyapocketlab/n8n-nodes-hello.helloTrigger",
       "typeVersion": 1,
       "position": [
         0,
@@ -66,7 +66,7 @@
         }
       },
       "name": "Reply",
-      "type": "n8n-nodes-hello.hello",
+      "type": "@lakshyapocketlab/n8n-nodes-hello.hello",
       "typeVersion": 1,
       "position": [
         520,

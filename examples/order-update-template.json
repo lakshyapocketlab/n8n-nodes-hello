@@ -42,7 +42,7 @@
         }
       },
       "name": "Send order update",
-      "type": "n8n-nodes-hello.hello",
+      "type": "@lakshyapocketlab/n8n-nodes-hello.hello",
       "typeVersion": 1,
       "position": [
         260,
