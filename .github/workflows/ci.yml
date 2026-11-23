@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+# Least privilege: CI only needs to read the repository.
+permissions:
+  contents: read
+
 # Cancel in-progress runs for the same branch/PR to avoid wasting CI minutes.
 concurrency:
   group: ci-${{ github.ref }}
@@ -13,16 +17,26 @@ concurrency:
 
 jobs:
   build:
+    name: Node ${{ matrix.node-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Dev tooling (@n8n/node-cli, vitest) needs Node >= 22, so Node 20 cannot install.
+        node-version: [22, 24]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 'lts/*'
+          node-version: ${{ matrix.node-version }}
           cache: 'npm'
+
+      - name: Check there are no runtime dependencies
+        # n8n verification requires zero runtime dependencies.
+        run: node -e "const p=require('./package.json'); if (p.dependencies && Object.keys(p.dependencies).length) { console.error('package.json must not have dependencies:', Object.keys(p.dependencies).join(', ')); process.exit(1); }"
 
       - name: Install dependencies
         run: 'npm ci'
@@ -32,3 +46,14 @@ jobs:
 
       - name: Run build
         run: 'npm run build'
+
+      - name: Run tests
+        run: 'npx vitest run'
+
+      - name: Audit production dependencies
+        # Zero runtime deps. The n8n-workflow peer dependency currently pulls a
+        # vulnerable zod that is never shipped in this package (n8n provides it
+        # at runtime), so findings are reported but non-blocking for now.
+        # Remove continue-on-error once n8n-workflow ships a fixed zod.
+        continue-on-error: true
+        run: 'npm audit --audit-level=high --omit=dev'
