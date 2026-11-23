@@ -1,5 +1,8 @@
 # @lakshyapocketlab/n8n-nodes-hello
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/lakshyapocketlab/n8n-nodes-hello/badge)](https://scorecard.dev/viewer/?uri=github.com/lakshyapocketlab/n8n-nodes-hello)
+[![CI](https://github.com/lakshyapocketlab/n8n-nodes-hello/actions/workflows/ci.yml/badge.svg)](https://github.com/lakshyapocketlab/n8n-nodes-hello/actions/workflows/ci.yml)
+
 n8n community nodes for [Hello](https://lakshyapocketlab.com), a WhatsApp Business API provider. Send messages and templates, upload media, list numbers and templates, and start workflows when a WhatsApp number receives a message.
 
 Nodes: **Hello** (actions) and **Hello Trigger**. Zero runtime dependencies.
