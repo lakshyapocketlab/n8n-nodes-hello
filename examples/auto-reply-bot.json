@@ -1,0 +1,110 @@
+{
+  "name": "Hello: auto-reply bot (ignores echoes)",
+  "nodes": [
+    {
+      "parameters": {
+        "phoneNumberId": "REPLACE_WITH_PHONE_NUMBER_ID",
+        "events": [
+          "message"
+        ]
+      },
+      "name": "Hello Trigger",
+      "type": "n8n-nodes-hello.helloTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "hello-autoreply",
+      "credentials": {
+        "helloApi": {
+          "id": "REPLACE",
+          "name": "Hello account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "1",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "text",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "name": "Is text?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        260,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendText",
+        "phoneNumberId": "={{ $('Hello Trigger').item.json.phone_number_id }}",
+        "to": "=+{{ $json.from }}",
+        "text": "=Thanks {{ $json.contact_name }}, we got: \"{{ $json.message.text.body }}\". A person will reply soon.",
+        "options": {
+          "replyTo": "={{ $json.message.id }}"
+        }
+      },
+      "name": "Reply",
+      "type": "n8n-nodes-hello.hello",
+      "typeVersion": 1,
+      "position": [
+        520,
+        -60
+      ],
+      "credentials": {
+        "helloApi": {
+          "id": "REPLACE",
+          "name": "Hello account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Hello Trigger": {
+      "main": [
+        [
+          {
+            "node": "Is text?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is text?": {
+      "main": [
+        [
+          {
+            "node": "Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {},
+  "pinData": {}
+}

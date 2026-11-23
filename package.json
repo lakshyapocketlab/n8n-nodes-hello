@@ -1,0 +1,60 @@
+{
+  "name": "n8n-nodes-hello",
+  "version": "0.1.0",
+  "description": "n8n community node for Hello, the WhatsApp Business API provider: send messages and templates, and trigger workflows on incoming WhatsApp messages.",
+  "license": "MIT",
+  "homepage": "https://github.com/lakshyapocketlab/n8n-nodes-hello#readme",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "whatsapp",
+    "whatsapp-business-api",
+    "hello"
+  ],
+  "author": {
+    "name": "Lakshya Pocket Lab",
+    "email": "359594326+shubham-lpl@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lakshyapocketlab/n8n-nodes-hello.git"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease",
+    "test": "vitest run"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/HelloApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Hello/Hello.node.js",
+      "dist/nodes/HelloTrigger/HelloTrigger.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "*",
+    "eslint": "9.32.0",
+    "prettier": "3.6.2",
+    "release-it": "^21.1.0",
+    "typescript": "5.9.2",
+    "vitest": "^5.1.1"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "bugs": {
+    "url": "https://github.com/lakshyapocketlab/n8n-nodes-hello/issues"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "name": "Hello: order update template",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-update",
+        "options": {}
+      },
+      "name": "Order webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "hello-order-update"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendTemplate",
+        "phoneNumberId": "REPLACE_WITH_PHONE_NUMBER_ID",
+        "to": "={{ $json.body.phone }}",
+        "template": "order_update::en_US",
+        "headerType": "none",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "value": "={{ $json.body.customer_name }}"
+            },
+            {
+              "value": "={{ $json.body.order_id }}"
+            },
+            {
+              "value": "={{ $json.body.status }}"
+            }
+          ]
+        },
+        "options": {
+          "idempotencyKey": "={{ 'order-' + $json.body.order_id + '-' + $json.body.status }}"
+        }
+      },
+      "name": "Send order update",
+      "type": "n8n-nodes-hello.hello",
+      "typeVersion": 1,
+      "position": [
+        260,
+        0
+      ],
+      "credentials": {
+        "helloApi": {
+          "id": "REPLACE",
+          "name": "Hello account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Order webhook": {
+      "main": [
+        [
+          {
+            "node": "Send order update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {},
+  "pinData": {}
+}
