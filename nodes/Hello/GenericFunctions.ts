@@ -4,6 +4,7 @@ import type {
 	IHookFunctions,
 	IHttpRequestMethods,
 	IHttpRequestOptions,
+	INode,
 	ILoadOptionsFunctions,
 	INodePropertyOptions,
 	IWebhookFunctions,
@@ -36,7 +37,12 @@ interface HelloPaging {
 
 /** Pulls Meta's `error.message` (and Hello's code) out of an API error body, when there is one. */
 function describeError(error: JsonObject): JsonObject {
-	const body = ((error.response as JsonObject | undefined)?.body ?? error.error) as
+	// n8n's httpRequestWithAuthentication already wraps failures in a NodeApiError, so the API
+	// body lives on `cause.response.data` (or `description`), not on `response.body`.
+	const cause = error.cause as JsonObject | undefined;
+	const body = ((error.response as JsonObject | undefined)?.body ??
+		error.error ??
+		(cause?.response as JsonObject | undefined)?.data) as
 		| JsonObject
 		| string
 		| undefined;
@@ -48,6 +54,16 @@ function describeError(error: JsonObject): JsonObject {
 		return { ...error, message: code ? `${envelope.message} (${String(code)})` : envelope.message };
 	}
 	return error;
+}
+
+/** NodeApiError keeps its own status-based message ("Forbidden - perhaps check your credentials?") unless one is passed explicitly. */
+function toNodeApiError(node: INode, error: JsonObject): NodeApiError {
+	const described = describeError(error);
+	return new NodeApiError(
+		node,
+		described,
+		described === error ? undefined : { message: String(described.message) },
+	);
 }
 
 export async function helloApiRequest(
@@ -71,7 +87,7 @@ export async function helloApiRequest(
 	try {
 		return await this.helpers.httpRequestWithAuthentication.call(this, 'helloApi', options);
 	} catch (error) {
-		throw new NodeApiError(this.getNode(), describeError(error as JsonObject));
+		throw toNodeApiError(this.getNode(), error as JsonObject);
 	}
 }
 
